@@ -1,0 +1,1 @@
+# sinatra-mcp-server-base

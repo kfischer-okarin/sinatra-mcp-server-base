@@ -21,3 +21,15 @@ For example, to reload the server when any Ruby file changes:
 ```sh
 ls **/*.rb | entr -r bundle exec rake dev
 ```
+
+## Fix code format
+
+```sh
+bundle exec rake standard:fix
+```
+
+## Run acceptance tests locally
+
+```sh
+bundle exec rake acceptance_tests:local
+```

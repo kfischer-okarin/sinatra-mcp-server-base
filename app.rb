@@ -3,9 +3,11 @@
 require "sinatra"
 require "model_context_protocol"
 
+SERVER_NAME = "my_server"
+
 post "/mcp" do
   server = ModelContextProtocol::Server.new(
-    name: "my_server"
+    name: SERVER_NAME
   )
   server.handle_json(request.body.read)
 end

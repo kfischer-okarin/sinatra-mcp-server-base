@@ -11,7 +11,7 @@ task :dev do
 end
 
 desc "Run acceptance tests against a specified server URL"
-task :acceptance_test, [:server_url] do |t, args|
+task :acceptance_tests, [:server_url] do |t, args|
   raise "server_url argument is required" unless args[:server_url]
 
   acceptance_tests_dir = File.expand_path("acceptance-tests", __dir__)
@@ -23,13 +23,13 @@ task :acceptance_test, [:server_url] do |t, args|
 end
 
 desc "Run local acceptance tests against production-mode server (optionally specify port)"
-namespace :acceptance_test do
+namespace :acceptance_tests do
   task :local, [:port] do |t, args|
     port = (args[:port] || 9292).to_i
     server = LocalAcceptanceTestServer.new(port)
     server.start
     begin
-      Rake::Task[:acceptance_test].invoke(server.url)
+      Rake::Task[:acceptance_tests].invoke(server.url)
     ensure
       server.stop
     end

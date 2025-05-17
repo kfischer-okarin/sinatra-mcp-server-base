@@ -1,4 +1,4 @@
-# sinatra-mcp-server-base
+# Sinatra MCP Server Base
 
 ## Install dependencies
 
@@ -19,5 +19,5 @@ Sinatra does not have built-in hot reloading. You can use a tool like [entr](htt
 For example, to reload the server when any Ruby file changes:
 
 ```sh
-ls *.rb | entr -r bundle exec rake dev
+ls **/*.rb | entr -r bundle exec rake dev
 ```

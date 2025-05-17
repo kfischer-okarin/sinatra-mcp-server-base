@@ -15,13 +15,12 @@ module AcceptanceTestDSL
     @next_id = 1
   end
 
-  # Send a JSON-RPC request and return the parsed response.
-  # You don't need to specify the `jsonrpc` or `id` fields, they will be added automatically.
-  def send_mcp_request(request_body)
+  def send_mcp_request(method:, params: {})
     json_rpc_request = {
       jsonrpc: "2.0",
       id: @next_id,
-      **request_body
+      method:,
+      params:
     }
     @next_id += 1
 

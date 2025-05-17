@@ -13,4 +13,6 @@ group :development, :test do
   gem "puma", "~> 6.6"
   # Rack application runner
   gem "rackup", "~> 2.2"
+  # Task runner
+  gem "rake", "~> 13.2"
 end

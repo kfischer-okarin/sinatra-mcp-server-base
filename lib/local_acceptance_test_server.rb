@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "open3"
 require "pathname"
 require "timeout"
@@ -30,7 +31,11 @@ class LocalAcceptanceTestServer
   def stop
     return unless @wait_thread&.alive?
 
-    Process.kill('TERM', @wait_thread.pid) rescue nil
+    begin
+      Process.kill("TERM", @wait_thread.pid)
+    rescue
+      nil
+    end
   end
 
   private

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-require_relative '../test_helper'
+
+require_relative "../test_helper"
 
 describe "Initialization" do
   it "should return a valid response from the MCP endpoint" do
@@ -10,7 +11,7 @@ describe "Initialization" do
         capabilities: {},
         clientInfo: {
           name: "TestClient",
-          version: "1.0.0",
+          version: "1.0.0"
         }
       }
     )

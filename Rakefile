@@ -1,28 +1,28 @@
 # Rakefile for Sinatra MCP Server Base
 require "bundler"
-require 'rake'
+require "rake"
 require "standard/rake"
 
-require_relative './lib/local_acceptance_test_server'
+require_relative "lib/local_acceptance_test_server"
 
-desc 'Run the development server with rackup'
+desc "Run the development server with rackup"
 task :dev do
-  sh 'bundle exec rackup'
+  sh "bundle exec rackup"
 end
 
-desc 'Run acceptance tests against a specified server URL'
+desc "Run acceptance tests against a specified server URL"
 task :acceptance_test, [:server_url] do |t, args|
   raise "server_url argument is required" unless args[:server_url]
 
-  acceptance_tests_dir = File.expand_path('acceptance-tests', __dir__)
+  acceptance_tests_dir = File.expand_path("acceptance-tests", __dir__)
   Bundler.with_unbundled_env do
     Dir.chdir(acceptance_tests_dir) do
-      system({ 'TEST_SERVER_URL' => args[:server_url] }, 'bundle exec ruby run_all_tests.rb')
+      system({"TEST_SERVER_URL" => args[:server_url]}, "bundle exec ruby run_all_tests.rb")
     end
   end
 end
 
-desc 'Run local acceptance tests against production-mode server (optionally specify port)'
+desc "Run local acceptance tests against production-mode server (optionally specify port)"
 namespace :acceptance_test do
   task :local, [:port] do |t, args|
     port = (args[:port] || 9292).to_i

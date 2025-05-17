@@ -1,6 +1,7 @@
 # Rakefile for Sinatra MCP Server Base
 require "bundler"
 require 'rake'
+require "standard/rake"
 
 require_relative './lib/local_acceptance_test_server'
 

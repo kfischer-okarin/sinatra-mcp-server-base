@@ -15,4 +15,6 @@ group :development, :test do
   gem "rackup", "~> 2.2"
   # Task runner
   gem "rake", "~> 13.2"
+  # Code formatting
+  gem "standard", "~> 1.50"
 end

@@ -4,8 +4,8 @@ require "open3"
 require "pathname"
 require "timeout"
 
-# LocalAcceptanceTestServer handles starting and stopping a local Sinatra server in production mode
-# which can be used as target for running acceptance tests against it.
+# LocalAcceptanceTestServer starts a local production instance of the application.
+# It is used as target for acceptance tests.
 class LocalAcceptanceTestServer
   attr_reader :url
 
@@ -15,6 +15,7 @@ class LocalAcceptanceTestServer
     @wait_thread = nil
   end
 
+  # Starts the server and waits for it to be ready.
   def start
     Dir.chdir(app_root_directory) do
       puts "Starting server: #{@command}..."
@@ -28,6 +29,7 @@ class LocalAcceptanceTestServer
     end
   end
 
+  # Stops the server if it is running.
   def stop
     return unless @wait_thread&.alive?
 
@@ -50,7 +52,7 @@ class LocalAcceptanceTestServer
         return if line.match?(regex)
       end
       # If we reach here, it means the output ended without matching the regex
-      raise "Output ended unexpectedly"
+      raise "Server output ended unexpectedly"
     end
   end
 end

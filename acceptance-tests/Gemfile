@@ -1,0 +1,10 @@
+# frozen_string_literal: true
+
+source "https://rubygems.org"
+
+# Testing Framework
+gem "minitest", "~> 5.25"
+# Nice test outputs
+gem "minitest-reporters", "~> 1.7"
+# Sending HTTP requests
+gem "rest-client", "~> 2.1"

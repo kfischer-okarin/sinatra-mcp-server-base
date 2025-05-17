@@ -1,7 +1,16 @@
+GIT
+  remote: https://github.com/modelcontextprotocol/ruby-sdk.git
+  revision: 784b8b85481098c15887189ed8e8cfb4c5a67852
+  ref: 784b8b85481098c15887189ed8e8cfb4c5a67852
+  specs:
+    model_context_protocol (0.7.0)
+      json_rpc_handler (~> 0.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
     base64 (0.2.0)
+    json_rpc_handler (0.1.1)
     logger (1.7.0)
     mustermann (3.0.3)
       ruby2_keywords (~> 0.0.1)
@@ -33,6 +42,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  model_context_protocol!
   puma (~> 6.6)
   rackup (~> 2.2)
   sinatra (~> 4.1)

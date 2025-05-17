@@ -4,24 +4,33 @@ require 'rake'
 
 require_relative './lib/local_acceptance_test_server'
 
-desc 'Run local acceptance tests against production-mode server'
-task :acceptance_tests_local do
-  server = LocalAcceptanceTestServer.new(9292)
-  server.start
+desc 'Run the development server with rackup'
+task :dev do
+  sh 'bundle exec rackup'
+end
+
+desc 'Run acceptance tests against a specified server URL'
+task :acceptance_test, [:server_url] do |t, args|
+  raise "server_url argument is required" unless args[:server_url]
 
   acceptance_tests_dir = File.expand_path('acceptance-tests', __dir__)
   Bundler.with_unbundled_env do
-    begin
-      Dir.chdir(acceptance_tests_dir) do
-        system({ 'TEST_SERVER_URL' => server.url }, 'bundle exec ruby run_all_tests.rb')
-      end
-    ensure
-      server.stop
+    Dir.chdir(acceptance_tests_dir) do
+      system({ 'TEST_SERVER_URL' => args[:server_url] }, 'bundle exec ruby run_all_tests.rb')
     end
   end
 end
 
-desc 'Run the development server with rackup'
-task :dev do
-  sh 'bundle exec rackup'
+desc 'Run local acceptance tests against production-mode server (optionally specify port)'
+namespace :acceptance_test do
+  task :local, [:port] do |t, args|
+    port = (args[:port] || 9292).to_i
+    server = LocalAcceptanceTestServer.new(port)
+    server.start
+    begin
+      Rake::Task[:acceptance_test].invoke(server.url)
+    ensure
+      server.stop
+    end
+  end
 end

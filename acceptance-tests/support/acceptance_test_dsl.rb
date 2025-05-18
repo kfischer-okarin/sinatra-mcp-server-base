@@ -16,6 +16,16 @@ module AcceptanceTestDSL
     @next_id = 1
   end
 
+  def call_tool(name, arguments = {})
+    response = send_mcp_request(method: "tools/call", params: {name:, arguments:})
+
+    result = response[:result]
+    assert_hash_with_values({isError: false}, result, "Expected tool call to succeed")
+    assert_includes(result, :content, "Expected tool call response to include 'contents'")
+
+    result[:content]
+  end
+
   def send_mcp_request(method:, params: {})
     json_rpc_request = {
       jsonrpc: "2.0",

@@ -4,6 +4,10 @@ require "sinatra"
 require "model_context_protocol"
 
 require_relative "lib/mcp_exception_reporter"
+require_relative "lib/tools"
+
+Tools.require_all_tool_files
+
 SERVER_NAME = "my_server"
 
 ModelContextProtocol.configure do |config|
@@ -16,7 +20,8 @@ post "/mcp" do
   MCPExceptionReporter.instance.sinatra_logger = request.logger
 
   server = ModelContextProtocol::Server.new(
-    name: SERVER_NAME
+    name: SERVER_NAME,
+    tools: Tools.tools
   )
   server.handle_json(request.body.read)
 end

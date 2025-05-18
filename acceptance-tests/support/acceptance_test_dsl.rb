@@ -30,23 +30,14 @@ module AcceptanceTestDSL
     assert_hash_with_values({content_type: "application/json"}, response.headers, "Expected response to have JSON content type")
     response_body = JSON.parse(response.body, symbolize_names: true)
 
-    raise "Invalid JSON-RPC response: #{response_body}" unless Helpers.valid_json_rpc_response?(response_body)
-    raise "Unexpected Response ID: #{response_body[:id]}" unless response_body[:id] == json_rpc_request[:id]
+    assert_hash_with_values({jsonrpc: "2.0"}, response_body, "Invalid JSON-RPC response format")
+    assert_includes(response_body, :id, "Invalid JSON-RPC response: missing 'id'")
+    assert response_body.key?(:result) || response_body.key?(:error), "Invalid JSON-RPC response: missing 'result' or 'error'"
+    assert_equal response_body[:id], json_rpc_request[:id], "Response ID does not match request ID"
 
     response_body
   rescue RestClient::ExceptionWithResponse => e
     raise "MCP request failed: #{e.response}"
-  end
-
-  module Helpers
-    module_function
-
-    def valid_json_rpc_response?(response_body)
-      response_body.is_a?(Hash) &&
-        response_body[:jsonrpc] == "2.0" &&
-        response_body.key?(:id) &&
-        (response_body.key?(:result) || response_body.key?(:error))
-    end
   end
 end
 

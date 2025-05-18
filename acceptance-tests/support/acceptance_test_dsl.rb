@@ -26,6 +26,8 @@ module AcceptanceTestDSL
     @next_id += 1
 
     response = @resource["/mcp"].post(json_rpc_request.to_json, content_type: :json)
+
+    assert_hash_with_values({content_type: "application/json"}, response.headers, "Expected response to have JSON content type")
     response_body = JSON.parse(response.body, symbolize_names: true)
 
     raise "Invalid JSON-RPC response: #{response_body}" unless Helpers.valid_json_rpc_response?(response_body)

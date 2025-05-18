@@ -10,8 +10,8 @@ class MCPExceptionReporter
   attr_accessor :sinatra_logger
 
   def call(exception, server_context)
-    original_error = exception.original_error
-    message = "Exception occured during MCP message handling: #{exception_details(original_error)} (Server context: #{server_context.inspect})"
+    exception = exception.original_error if exception.original_error
+    message = "Exception occured during MCP message handling: #{exception_details(exception)} (Server context: #{server_context.inspect})"
 
     if sinatra_logger
       sinatra_logger.error message

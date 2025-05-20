@@ -5,9 +5,9 @@ require "standard/rake"
 
 require_relative "lib/local_acceptance_test_server"
 
-desc "Run the development server with rackup"
+desc "Run the development server"
 task :dev do
-  sh "bundle exec rackup"
+  sh "./scripts/start-server.sh"
 end
 
 desc "Run acceptance tests against a specified server URL"

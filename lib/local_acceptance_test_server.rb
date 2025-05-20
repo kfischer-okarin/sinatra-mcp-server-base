@@ -10,7 +10,7 @@ class LocalAcceptanceTestServer
   attr_reader :url
 
   def initialize(port)
-    @command = "RACK_ENV=production bundle exec rackup -p #{port}"
+    @command = "RACK_ENV=production PORT=#{port} bundle exec puma -C config/puma.rb"
     @url = "http://localhost:#{port}"
     @wait_thread = nil
   end
@@ -20,9 +20,10 @@ class LocalAcceptanceTestServer
     Dir.chdir(app_root_directory) do
       puts "Starting server: #{@command}..."
       _, server_stdout, @wait_thread = Open3.popen2e(@command)
+      puts "Server started with PID #{@wait_thread.pid}"
 
       begin
-        wait_for_io_line_matching(server_stdout, /^\* Listening on/, timeout: 10)
+        wait_for_io_line_matching(server_stdout, /Use Ctrl-C to stop/, timeout: 10)
       rescue Timeout::Error
         raise "Server did not start within the expected time"
       end
@@ -34,9 +35,11 @@ class LocalAcceptanceTestServer
     return unless @wait_thread&.alive?
 
     begin
-      Process.kill("TERM", @wait_thread.pid)
-    rescue
-      nil
+      puts "Stopping server..."
+      Process.kill("INT", @wait_thread.pid)
+      @wait_thread.join
+    rescue Exception => e
+      puts "Failed to stop server: #{e.message}"
     end
   end
 
